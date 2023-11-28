@@ -8,9 +8,9 @@
 
 typedef struct
 {
-  int dia[2];
-  int mes[2];
-  int ano[4];
+  int dia;
+  int mes;
+  int ano;
 } DATEC;
 
 typedef struct
@@ -26,11 +26,9 @@ typedef struct
   float valor;
 } Reserva;
 
-// Função para exibir as informações de uma reserva
+// Fun��o para exibir as informa��es de uma reserva
 void exibirReserva(Reserva reserva)
 {
-  setlocale(LC_ALL, "Portuguese");
-
   printf("\nReserva #%d:\n", reserva.reserva_id);
   if (reserva.hotel == 1)
   {
@@ -42,13 +40,13 @@ void exibirReserva(Reserva reserva)
   }
   printf("Nome do cliente: %s\n", reserva.nome_cliente);
 
-  printf("Data de nascimento do cliente: %02d/%02d/%04d\n", reserva.nascimento.dia[0], reserva.nascimento.mes[0], reserva.nascimento.ano[0]);
+  printf("Data de nascimento do cliente: %02d/%02d/%04d\n", reserva.nascimento.dia, reserva.nascimento.mes, reserva.nascimento.ano);
 
   printf("Documento do cliente: %s\n", reserva.identificacao_cliente);
 
-  printf("Data de check-in: %02d/%02d/%04d\n", reserva.data_checkin.dia[0], reserva.data_checkin.mes[0], reserva.data_checkin.ano[0]);
+  printf("Data de check-in: %02d/%02d/%04d\n", reserva.data_checkin.dia, reserva.data_checkin.mes, reserva.data_checkin.ano);
 
-  printf("Data de check-out: %02d/%02d/%04d\n", reserva.data_checkout.dia[0], reserva.data_checkout.mes[0], reserva.data_checkout.ano[0]);
+  printf("Data de check-out: %02d/%02d/%04d\n", reserva.data_checkout.dia, reserva.data_checkout.mes, reserva.data_checkout.ano);
 
   if (reserva.quarto_escolhido == 1)
   {
@@ -68,15 +66,35 @@ int escolha;
 
 void escolha_hotel()
 {
-  printf("Escolha o hotel de sua preferencia:\n");
-  printf("1. Hotel A\n");
-  printf("2. Hotel B\n");
-  printf("Digite o número correspondete a sua escolha:\n");
-  scanf("%d", &escolha);
+  do
+  {
+    printf("Escolha o hotel de sua prefer�ncia:\n");
+    printf("1. Hotel A\n");
+    printf("2. Hotel B\n");
+    printf("Digite o numero correspondete a sua escolha:\n");
+    scanf("%d", &escolha);
+
+    if (escolha == 1)
+    {
+      system("cls");
+      printf("Voc� escolheu o Hotel A.\n Tenha uma �tima estadia!\n");
+    }
+    else if (escolha == 2)
+    {
+      system("cls");
+      printf("Voc� escolheu o Hotel B.\n Tenha uma �tima estadia!\n");
+    }
+    else
+    {
+      system("cls");
+      printf("Escolha invalida. Por gentileza, escolha 1 para Hotel A ou 2 para o Hotel B.\n");
+    }
+  } while (escolha != 1 && escolha != 2);
 }
 
 int main()
 {
+  setlocale(LC_ALL, "Portuguese");
   int tipo_quarto, opcao, num_reservas = 0, suite_Standard = 0, suite_Master = 0, suite_Deluxo = 0;
 
   bool disponibilidade_suite_master[30];    // Um array de 30 booleanos para representar a disponibilidade dos dias
@@ -85,7 +103,10 @@ int main()
   int i, quantidade_dias, data_reserva;
   int valor_suite_master = 120, valor_quarto_luxo = 160, valor_quarto_standard = 200;
 
-  // Inicialize todos os dias como disponíveis (true)
+  // Realizar login
+  login();
+
+  // Inicialize todos os dias como disponiveis (true)
   for (i = 0; i < 30; i++)
   {
     disponibilidade_suite_master[i] = true;
@@ -105,38 +126,20 @@ int main()
   strftime(buffer, 20, "%d/%m/%Y %H:%M:%S", tm_info);
 
   printf("Seja bem vindo!\n");
-  printf("Horário Atual: \n");
+  printf("Horario Atual: \n");
   printf("%s \n", buffer);
-  system("clear");
-
-  fflush(stdin);
-
-  if (escolha == 1)
-  {
-    system("clear");
-    printf("Voce escolheu o Hotel A.\n Tenha uma otima estadia!\n");
-  }
-  else if (escolha == 2)
-  {
-    system("clear");
-    printf("Voce escolheu o Hotel B.\n Tenha uma otima estadia!\n");
-  }
-  else
-  {
-    system("clear");
-    printf("Escolha inválida. Por gentileza, escolha 1 para Hotel A ou 2 para o Hotel B.\n");
-  }
+  system("cls");
 
   while (1)
   {
 
-    printf("\nMenu de opções:\n");
+    printf("\nMenu de op��es:\n");
     printf("1. Fazer uma nova reserva\n");
     printf("2. Visualizar reservas\n");
     printf("3. Modificar uma reserva\n");
     printf("4. Cancelar uma reserva\n");
     printf("5. Sair\n");
-    printf("Escolha uma opção: ");
+    printf("Escolha uma das op��es: ");
     scanf("%d", &opcao);
     fflush(stdin);
 
@@ -145,9 +148,9 @@ int main()
     case 1:
       if (num_reservas < 100)
       {
-        system("clear");
+        system("cls");
         escolha_hotel();
-        system("clear");
+        system("cls");
         printf("Digite o nome do cliente: ");
         scanf(" %[^\n]", &reservas[num_reservas].nome_cliente);
         fflush(stdin);
@@ -157,47 +160,47 @@ int main()
         fflush(stdin);
 
         printf("Digite sua data de nascimento (DD/MM/AAAA): ");
-        scanf("%d/%d/%d", &reservas[num_reservas].nascimento.dia[0], &reservas[num_reservas].nascimento.mes[0], &reservas[num_reservas].nascimento.ano[0]);
+        scanf("%d/%d/%d", &reservas[num_reservas].nascimento.dia, &reservas[num_reservas].nascimento.mes, &reservas[num_reservas].nascimento.ano);
         fflush(stdin);
 
-        printf("Quantos dias de estadia você deseja?");
+        printf("Quantos dias de estadia voc� deseja? ");
         scanf("%i", &quantidade_dias);
         fflush(stdin);
 
         printf("Digite a data de check-in (DD/MM/AAAA): ");
-        scanf("%d/%d/%d", &reservas[num_reservas].data_checkin.dia[0], &reservas[num_reservas].data_checkin.mes[0], &reservas[num_reservas].data_checkin.ano[0]);
+        scanf("%d/%d/%d", &reservas[num_reservas].data_checkin.dia, &reservas[num_reservas].data_checkin.mes, &reservas[num_reservas].data_checkin.ano);
         fflush(stdin);
 
-        if (reservas[num_reservas].data_checkin.dia[0] + quantidade_dias >= 31)
+        if (reservas[num_reservas].data_checkin.dia + quantidade_dias >= 31)
         {
-          reservas[num_reservas].data_checkout.dia[0] = reservas[num_reservas].data_checkin.dia[0];
-          reservas[num_reservas].data_checkout.mes[0] = reservas->data_checkin.mes[0] + 1;
+          reservas[num_reservas].data_checkout.dia = reservas[num_reservas].data_checkin.dia;
+          reservas[num_reservas].data_checkout.mes = reservas->data_checkin.mes + 1;
 
-          while (reservas[num_reservas].data_checkout.dia[0] != 30)
+          while (reservas[num_reservas].data_checkout.dia != 30)
           {
-            reservas[num_reservas].data_checkout.dia[0]++;
+            reservas[num_reservas].data_checkout.dia++;
             quantidade_dias--;
           }
-          reservas[num_reservas].data_checkout.dia[0] = 1 + quantidade_dias - 1;
+          reservas[num_reservas].data_checkout.dia = 1 + quantidade_dias - 1;
         }
         else
         {
-          reservas[num_reservas].data_checkout.dia[0] = reservas[num_reservas].data_checkin.dia[0] + quantidade_dias;
-          reservas[num_reservas].data_checkout.mes[0] = reservas[num_reservas].data_checkin.mes[0];
+          reservas[num_reservas].data_checkout.dia = reservas[num_reservas].data_checkin.dia + quantidade_dias;
+          reservas[num_reservas].data_checkout.mes = reservas[num_reservas].data_checkin.mes;
         }
 
-        if (reservas[num_reservas].data_checkout.mes[0] > 12)
+        if (reservas[num_reservas].data_checkout.mes > 12)
         {
-          reservas[num_reservas].data_checkout.mes[0] = 1;
-          reservas[num_reservas].data_checkout.ano[0] = reservas[num_reservas].data_checkin.ano[0] + 1;
+          reservas[num_reservas].data_checkout.mes = 1;
+          reservas[num_reservas].data_checkout.ano = reservas[num_reservas].data_checkin.ano + 1;
         }
         else
         {
-          reservas[num_reservas].data_checkout.ano[0] = reservas[num_reservas].data_checkin.ano[0];
+          reservas[num_reservas].data_checkout.ano = reservas[num_reservas].data_checkin.ano;
         }
 
         fflush(stdin);
-        system("clear");
+        system("cls");
 
         printf("Escolha o tipo de quarto: \n");
         printf("1 Suite Master\n");
@@ -214,13 +217,6 @@ int main()
         switch (tipo_quarto)
         {
         case 1:
-          // if (disponibilidade_suite_master[i - 1] == false)
-          // {
-          //   printf("Dia indisponivel para reserva\n");
-          //   sleep(2);
-          //   system("clear");
-          //   break;
-          // };
 
           for (i = reservas[num_reservas].data_checkin.dia; i < reservas[num_reservas].data_checkin.dia + quantidade_dias; i++)
           {
@@ -240,14 +236,6 @@ int main()
           break;
 
         case 2:
-          // if (disponibilidade_quarto_luxo[i - 1] == false)
-          // {
-          //   system("clear");
-          //   printf("Dia indisponivel para reserva\n");
-          //   sleep(2);
-          //   system("clear");
-          //   break;
-          // }
 
           reservas[num_reservas].valor = quantidade_dias * valor_quarto_luxo;
           for (i = reservas[num_reservas].data_checkin.dia; i < reservas[num_reservas].data_checkin.dia + quantidade_dias; i++)
@@ -267,13 +255,6 @@ int main()
           break;
 
         case 3:
-          // if (disponibilidade_quarto_standard[i - 1] == false)
-          // {
-          //   printf("Dia indisponivel para reserva\n");
-          //   sleep(2);
-          //   system("clear");
-          //   break;
-          // }
 
           reservas[num_reservas].valor = quantidade_dias * valor_quarto_standard;
           for (i = reservas[num_reservas].data_checkin.dia; i < reservas[num_reservas].data_checkin.dia + quantidade_dias; i++)
@@ -293,35 +274,34 @@ int main()
           num_reservas++;
           break;
         default:
-          system("clear");
-          printf("Opção inválida");
+          system("cls");
+          printf("Op��es invalida");
         }
       }
       else
       {
-        system("clear");
+        system("cls");
         printf("Limite de reservas atingido!\n");
 
         sleep(2);
-        system("clear");
+        system("cls");
       }
       break;
 
     case 2:
-      system("clear");
+      system("cls");
       printf("Reservas existentes:\n");
-      // system("clear");
+
       for (int i = 0; i < num_reservas; i++)
       {
         exibirReserva(reservas[i]);
       }
       printf("\n");
-      // system("pause");
-      // system("clear");
+
       break;
 
     case 3:
-      system("clear");
+      system("cls");
       printf("Digite o ID da reserva que deseja modificar: ");
 
       int id_modificar;
@@ -329,65 +309,65 @@ int main()
 
       if (id_modificar >= 1 && id_modificar <= num_reservas)
       {
-        system("clear");
+        system("cls");
         exibirReserva(reservas[id_modificar - 1]);
         printf("\nDigite a nova data de check-in (DD/MM/AAAA): ");
-        scanf("%d/%d/%d", &reservas[id_modificar - 1].data_checkin.dia[0], &reservas[id_modificar - 1].data_checkin.mes[0], &reservas[id_modificar - 1].data_checkin.ano[0]);
+        scanf("%d/%d/%d", &reservas[id_modificar - 1].data_checkin.dia, &reservas[id_modificar - 1].data_checkin.mes, &reservas[id_modificar - 1].data_checkin.ano);
 
-        system("clear");
+        system("cls");
 
-        printf("Quantos dias para estadia você deseja?");
+        printf("Quantos dias para estadia voc� deseja?");
         scanf("%i", &quantidade_dias);
 
         fflush(stdin);
-        if (reservas[id_modificar - 1].data_checkin.dia[0] + quantidade_dias >= 31)
+        if (reservas[id_modificar - 1].data_checkin.dia + quantidade_dias >= 31)
         {
-          reservas[id_modificar - 1].data_checkout.dia[0] = reservas[id_modificar - 1].data_checkin.dia[0];
-          reservas[id_modificar - 1].data_checkout.mes[0] = reservas->data_checkin.mes[0] + 1;
+          reservas[id_modificar - 1].data_checkout.dia = reservas[id_modificar - 1].data_checkin.dia;
+          reservas[id_modificar - 1].data_checkout.mes = reservas->data_checkin.mes + 1;
 
-          while (reservas[id_modificar - 1].data_checkout.dia[0] != 30)
+          while (reservas[id_modificar - 1].data_checkout.dia != 30)
           {
-            reservas[id_modificar - 1].data_checkout.dia[0]++;
+            reservas[id_modificar - 1].data_checkout.dia++;
             quantidade_dias--;
           }
-          reservas[id_modificar - 1].data_checkout.dia[0] = 1 + quantidade_dias - 1;
+          reservas[id_modificar - 1].data_checkout.dia = 1 + quantidade_dias - 1;
         }
         else
         {
-          reservas[id_modificar - 1].data_checkout.dia[0] = reservas[id_modificar - 1].data_checkin.dia[0] + quantidade_dias;
-          reservas[id_modificar - 1].data_checkout.mes[0] = reservas[id_modificar - 1].data_checkin.mes[0];
+          reservas[id_modificar - 1].data_checkout.dia = reservas[id_modificar - 1].data_checkin.dia + quantidade_dias;
+          reservas[id_modificar - 1].data_checkout.mes = reservas[id_modificar - 1].data_checkin.mes;
         }
 
-        if (reservas[id_modificar - 1].data_checkout.mes[0] > 12)
+        if (reservas[id_modificar - 1].data_checkout.mes > 12)
         {
-          reservas[id_modificar - 1].data_checkout.mes[0] = 1;
-          reservas[id_modificar - 1].data_checkout.ano[0] = reservas[id_modificar - 1].data_checkin.ano[0] + 1;
+          reservas[id_modificar - 1].data_checkout.mes = 1;
+          reservas[id_modificar - 1].data_checkout.ano = reservas[id_modificar - 1].data_checkin.ano + 1;
         }
         else
         {
-          reservas[id_modificar - 1].data_checkout.ano[0] = reservas[id_modificar - 1].data_checkin.ano[0];
+          reservas[id_modificar - 1].data_checkout.ano = reservas[id_modificar - 1].data_checkin.ano;
         }
 
         printf("Digite o novo tipo de quarto: ");
         scanf(" %i", &reservas[id_modificar - 1].quarto_escolhido);
 
-        system("clear");
+        system("cls");
 
         printf("Reserva modificada com sucesso!\n");
         sleep(2);
-        system("clear");
+        system("cls");
       }
       else
       {
-        system("clear");
-        printf("ID de reserva inválido!\n");
+        system("cls");
+        printf("ID de reserva invalido!\n");
         sleep(2);
-        system("clear");
+        system("cls");
       }
       break;
 
     case 4:
-      system("clear");
+      system("cls");
       printf("Digite o ID da reserva que deseja cancelar: ");
       int id_cancelar;
       scanf("%d", &id_cancelar);
@@ -398,37 +378,111 @@ int main()
           reservas[i] = reservas[i + 1];
         }
         num_reservas--;
-        system("clear");
+        system("cls");
 
         printf("Como politica de cancelamento, cobraremos uma taxa de 10%% do valor pago na sua reserva\n");
         sleep(5);
-        system("clear");
+        system("cls");
 
         printf("Reserva cancelada com sucesso!\n");
         sleep(2);
-        system("clear");
+        system("cls");
       }
       else
       {
-        system("clear");
-        printf("ID de reserva inválido!\n");
+        system("cls");
+        printf("ID de reserva invalido!\n");
         sleep(2);
-        system("clear");
+        system("cls");
       }
       break;
 
     case 5:
-      system("clear");
-      printf("Saindo do programa. Até logo!\n");
+      system("cls");
+      printf("Saindo do programa. At� logo!\n");
       exit(0);
 
     default:
-      system("clear");
-      printf("Opção inválida!\n");
+      system("cls");
+      printf("Op��o invalida!\n");
       sleep(2);
-      system("clear");
+      system("cls");
     }
   }
 
   return 0;
+}
+
+void login()
+{
+  int a = 0, i = 0;
+  char nomeUsuario[10], c = ' ';
+  char senha[10], codigo[10];
+  char usuario[10] = "admin";
+  char senhaCorreta[10] = "admin";
+
+  // inicia uma contagem de tentativas de login (variavel 'a') e um contador (variavel 'i').
+  // Tambem declara variaveis para armazenar o nome de usuario, senha e valores corretos para compara��es.
+
+  do
+  {
+    strcpy(nomeUsuario, "");
+    strcpy(senha, "");
+    a = 0;
+
+    printf(".##.....##..#######..########.########.##..........###....########..####....###............######...#######..##.....##\n");
+    printf(".##.....##.##.....##....##....##.......##.........##.##...##.....##..##....##.##..........##....##.##.....##.###...###\n");
+    printf(".##.....##.##.....##....##....##.......##........##...##..##.....##..##...##...##.........##.......##.....##.####.####\n");
+    printf(".#########.##.....##....##....######...##.......##.....##.########...##..##.....##........##.......##.....##.##.###.##\n");
+    printf(".##.....##.##.....##....##....##.......##.......#########.##...##....##..#########........##.......##.....##.##.....##\n");
+    printf(".##.....##.##.....##....##....##.......##.......##.....##.##....##...##..##.....##....###.##....##.##.....##.##.....##\n");
+    printf(".##.....##..#######.....##....########.########.##.....##.##.....##.####.##.....##....###..######...#######..##.....##\n");
+
+    printf("\n*********  FORMULARIO DE LOGIN  *********  \n");
+    printf(" \n      INSIRA O NOME DE USUARIO:-");
+    fflush(stdin);
+    scanf("%s", &nomeUsuario);
+    fflush(stdin);
+    printf(" \n      INSIRA A SENHA: ");
+    do
+    {
+      c = getch();
+      if (isprint(c))
+      {
+        senha[a] = c;
+        a++;
+        printf("*");
+      }
+      else if (c == 8 && a)
+      {
+        senha[a] = '\0';
+        a--;
+        printf("\b \b");
+      }
+    } while (c != 13);
+
+    senha[a] = '\0';
+    if (strcmp(nomeUsuario, usuario) == 0 && strcmp(senha, senhaCorreta) == 0)
+    {
+      printf("  \n\n\n       BEM-VINDO !!!! LOGIN REALIZADO COM SUCESSO\n");
+      system("PAUSE");
+      system("cls");
+      break;
+    }
+    else
+    {
+      printf("\n        DESCULPE !!!! O LOGIN N�O FOI BEM-SUCEDIDO!\n");
+      i++;
+
+      getchar();
+      system("cls");
+    }
+  } while (i <= 3);
+  if (i > 2)
+  {
+    printf("\nDesculpe, voc� inseriu o nome de usuario e senha incorretamente quatro vezes!!!\n");
+
+    system("PAUSE");
+    exit(0);
+  }
 }
